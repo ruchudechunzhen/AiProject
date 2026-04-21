@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: ai-langchain4j-demo
+langchain4j:
+  community:
+    dashscope:
+      chat-model: # ??????
+        api-key: sk-c1567448faf147e8b2ec11624b1cbe6c
+        model-name: deepseek-v3.2
+      streaming-chat-model: # ??????
+        api-key: sk-c1567448faf147e8b2ec11624b1cbe6c
+        model-name: deepseek-v3.2
