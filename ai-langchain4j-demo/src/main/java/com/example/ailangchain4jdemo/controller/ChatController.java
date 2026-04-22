@@ -21,19 +21,25 @@ public class ChatController {
 
     private final QwenStreamingChatModel qwenStreamingChatModel;
 
+    // 记忆功能
     private final AiConfig.Assistant aiAssistant;
 
+    // 记忆分区功能
+    private final AiConfig.AssistantUnique assistantUnique;
+
+    // 阻塞式调用
     @RequestMapping("/chat")
     public String QWenChat(@RequestParam("question") String questtion){
         return qwenChatModel.chat(questtion);
     }
 
+    // 流式调用
     @RequestMapping(value = "/streamChat" , produces = "text/stream;charset=UTF-8")
-    public Flux<String> QWenStreamingChat(@RequestParam("question") String questtion){
+    public Flux<String> QWenStreamingChat(@RequestParam("question") String question){
         // 流式响应需要用Flux进行返回
         Flux<String> flux = Flux.create( stringFluxSink -> {
             // 使用chat方法流式调用模型，返回的内容需要使用StreamingChatResponseHandler来接收
-            qwenStreamingChatModel.chat(questtion, new StreamingChatResponseHandler() {
+            qwenStreamingChatModel.chat(question, new StreamingChatResponseHandler() {
 
                 @Override
                 public void onPartialResponse(String partialResponse) {
@@ -57,12 +63,13 @@ public class ChatController {
         return flux;
     }
 
-
+    //记忆功能
     @RequestMapping("/memoryChat")
     public String memoryChat(@RequestParam(value = "question", defaultValue = "我叫千问") String question) {
         return aiAssistant.chat(question);
     }
 
+    // 流式,记忆功能
     @RequestMapping(value = "/memoryStreamChat" , produces = "text/stream;charset=UTF-8")
     public Flux<String> QWenMemoryStreamingChat(@RequestParam("question") String question){
 
@@ -80,5 +87,11 @@ public class ChatController {
                     // 4.4 启动AI的流式响应（开始接收AI的逐字回复）
                     .start();
         });
+    }
+
+    // 记忆功能
+    @RequestMapping("/idMemoryChat")
+    public String idMemoryChat(@RequestParam("id") String id, @RequestParam("question") String question ){
+        return  assistantUnique.chat(Integer.getInteger(id),question);
     }
 }
