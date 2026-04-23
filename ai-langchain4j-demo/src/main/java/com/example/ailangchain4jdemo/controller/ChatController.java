@@ -27,6 +27,9 @@ public class ChatController {
     // 记忆分区功能
     private final AiConfig.AssistantUnique assistantUnique;
 
+    // 使用hashMap存储，通过memoryID 和队列隔离会话记忆
+    private final AiConfig.AssistantUnique assistantUniqueHash;
+
     // 阻塞式调用
     @RequestMapping("/chat")
     public String QWenChat(@RequestParam("question") String questtion){
@@ -93,5 +96,17 @@ public class ChatController {
     @RequestMapping("/idMemoryChat")
     public String idMemoryChat(@RequestParam("id") String id, @RequestParam("question") String question ){
         return  assistantUnique.chat(Integer.getInteger(id),question);
+    }
+
+    @RequestMapping(value ="/hashMemoryChat",produces = "text/stream;chartset=UTF-8")
+    public Flux<String> hashMemoryChat(@RequestParam("id") String id, @RequestParam("question") String question){
+        TokenStream stream = assistantUniqueHash.stream(Integer.getInteger(id),question);
+        return Flux.create(fluxSink -> {
+            stream.onPartialResponse(fluxSink::next )
+                    .onCompleteResponse(chatResponse -> fluxSink.complete())
+                    .onError(fluxSink::error)
+                    .start();
+
+        });
     }
 }

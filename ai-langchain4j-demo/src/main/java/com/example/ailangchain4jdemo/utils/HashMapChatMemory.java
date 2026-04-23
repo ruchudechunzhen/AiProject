@@ -26,6 +26,10 @@ public class HashMapChatMemory implements ChatMemory {
         GLOBAL_MEMORY_STORE.putIfAbsent(memoryId, new LinkedBlockingDeque<>());
     }
 
+    private Deque<ChatMessage> getMessageQueue(){
+        return GLOBAL_MEMORY_STORE.get(memoryId);
+    }
+
     @Override
     public Object id() {
         return this.memoryId;
@@ -33,7 +37,12 @@ public class HashMapChatMemory implements ChatMemory {
 
     @Override
     public void add(ChatMessage message) {
-
+        Deque<ChatMessage> messageQueue = getMessageQueue();
+        messageQueue.addLast(message);
+        // 循环删除，知道符合数量
+        while (messageQueue.size() > maxMessage){
+            messageQueue.removeFirst();
+        }
     }
 
     @Override
@@ -43,6 +52,6 @@ public class HashMapChatMemory implements ChatMemory {
 
     @Override
     public void clear() {
-        GLOBAL_MEMORY_STORE.clear();
+        getMessageQueue().clear();
     }
 }
