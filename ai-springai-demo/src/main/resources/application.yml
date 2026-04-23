@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ai-springai-demo
+  ai:
+    dashscope:
+      chat:
+        options:
+          model: qwen3-max #大模型名称
+      api-key: sk-c1567448faf147e8b2ec11624b1cbe6c
+    deepseek:
+      chat:
+        options:
+          model: deepseek-chat # 配置deepseek上的模型
+      api-key: sk-fbe0f94a60664663bb7f8ef0348b896e # 配置deepseek的apikey

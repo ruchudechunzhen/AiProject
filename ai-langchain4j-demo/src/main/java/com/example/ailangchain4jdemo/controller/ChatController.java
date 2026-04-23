@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @RestController
 @RequestMapping("/ai")
 @RequiredArgsConstructor
@@ -100,7 +103,7 @@ public class ChatController {
 
     @RequestMapping(value ="/hashMemoryChat",produces = "text/stream;chartset=UTF-8")
     public Flux<String> hashMemoryChat(@RequestParam("id") String id, @RequestParam("question") String question){
-        TokenStream stream = assistantUniqueHash.stream(Integer.getInteger(id),question);
+        TokenStream stream = assistantUniqueHash.stream(Integer.getInteger(id),question, LocalDateTime.now().toString());
         return Flux.create(fluxSink -> {
             stream.onPartialResponse(fluxSink::next )
                     .onCompleteResponse(chatResponse -> fluxSink.complete())
