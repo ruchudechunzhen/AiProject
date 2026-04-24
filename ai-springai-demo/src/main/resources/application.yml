@@ -12,3 +12,18 @@ spring:
         options:
           model: deepseek-chat # 配置deepseek上的模型
       api-key: sk-fbe0f94a60664663bb7f8ef0348b896e # 配置deepseek的apikey
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always #开启自动初始化表结构
+            platform: mysql #选择使用mysql的类型
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true # mysql连接地址
+    username: root
+    password: 123456

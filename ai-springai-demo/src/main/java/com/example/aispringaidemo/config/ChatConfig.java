@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class chatConfig {
+public class ChatConfig {
     private final DashScopeChatModel dashScopeChatModel;
 
     @Bean
