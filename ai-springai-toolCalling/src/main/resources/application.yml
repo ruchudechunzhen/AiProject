@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: ai-springai-toolCalling
+  ai:
+    dashscope:
+      chat:
+        options:
+          model: qwen3-max
+      api-key: sk-c1567448faf147e8b2ec11624b1cbe6c

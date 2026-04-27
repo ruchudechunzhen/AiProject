@@ -25,6 +25,7 @@
         <module>ai-springai-demo</module>
         <module>ai-langchain4j-demo</module>
         <module>ai-springai-RAG</module>
+        <module>ai-springai-record</module>
     </modules>
     <dependencyManagement>
         <dependencies>
